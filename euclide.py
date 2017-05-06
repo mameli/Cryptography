@@ -11,4 +11,4 @@ def euclideEsteso(a, b):
         y0, y1 = y1, y0 - quotient * y1
     return (a, x0, y0) if a != 1 else (a, x0, y0, x0 % bStart)
 
-print euclideEsteso(17, 60)
+# print euclideEsteso(17, 60)
