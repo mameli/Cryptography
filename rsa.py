@@ -1,6 +1,5 @@
 from esponenziazioneVeloce import expVeloce
 from euclide import euclideEsteso
-from fractions import gcd
 import random
 
 
@@ -14,7 +13,7 @@ def decrypt(c, keys):
 
 def coPrime(n):
     c = random.randint(2, n)
-    while gcd(c, n) != 1:
+    while euclideEsteso(c, n)[0] != 1:
         c = random.randint(2, n)
     return c
 
@@ -32,7 +31,7 @@ def generateKey(p, q):
 def generateKeyCrt(p, q):
     n = p * q
     phi = (p - 1) * (q - 1)
-    d = 7
+    d = coPrime(phi)
     e = euclideEsteso(d, phi)
     dp = d % (p - 1)
     if dp < 0:
@@ -40,9 +39,9 @@ def generateKeyCrt(p, q):
     dq = d % (q - 1)
     if dq < 0:
         dq = dq + q - 1
-    q_inv = euclideEsteso(q, p)[1]
+    qInv = euclideEsteso(q, p)[1]
     kp = (e[1], n)
-    km = (p, q, dp, dq, q_inv)
+    km = (p, q, dp, dq, qInv)
     return kp, km
 
 
@@ -52,11 +51,11 @@ def decryptCrt(c, km):
     h = km[4] * (m1 - m2) % km[0]
     return m2 + h * km[1]
 
-# public_key, private_key = generateKey(3, 11)
-# print(encrypt(8, public_key))
-# print(decrypt(encrypt(8, public_key), private_key))
-# public_key, private_key = generateKeyCrt(3, 11)
-# encr = encrypt(8, public_key)
-# print(encr)
-# print(decryptCrt(encr, private_key))
-print coPrime(20)
+public_key, private_key = generateKey(3, 11)
+print(encrypt(8, public_key))
+print(decrypt(encrypt(8, public_key), private_key))
+public_key, private_key = generateKeyCrt(3, 11)
+encr = encrypt(8, public_key)
+print(encr)
+print(decryptCrt(encr, private_key))
+# print coPrime(20)
